@@ -19,9 +19,7 @@ const useStyles = makeStyles(theme => ({
 export default function Today() {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [show, setShow] = useState(true);
   const [goal, setGoal] = useState("");
-  
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -29,23 +27,27 @@ export default function Today() {
 
   const handleClose = () => {
     setOpen(false);
-  };
 
-  // To handle showing "ADD ONE GOAL" button based on if a goal already exists or not
-  const handleShow = () => {
   };
 
   const handleInputChange = e => {
     setGoal(e.target.value);
   };
 
+  // button variable to hold changes in the body - show goal if set, or show button
+  let button;
+  if (goal !== "" && open === false) {
+    button = <p>{goal}</p>
+  } else {
+    button = <Button variant="outlined" color="primary" className={classes.margin} onClick={handleClickOpen}>
+      Add One Goal
+    </Button>
+  }
 
   return (
     <div>
       <h1 className='custom-body'>Today</h1>
-      <Button variant="outlined" color="primary" className={classes.margin} onClick={handleClickOpen}>
-        Add One Goal
-      </Button>
+      {button}
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>
           <DialogContentText>
@@ -70,7 +72,6 @@ export default function Today() {
           </Button>
         </DialogActions>
       </Dialog>
-      <p>{goal}</p>
     </div>
   )
 }
