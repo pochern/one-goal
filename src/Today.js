@@ -34,6 +34,11 @@ export default function Today() {
     setGoal(e.target.value);
   };
 
+  const handleCancel = () => {
+    setGoal("");
+    setOpen(false);
+  };
+
   // button variable to hold changes in the body - show goal if set, or show button
   let button;
   if (goal !== "" && open === false) {
@@ -64,7 +69,7 @@ export default function Today() {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleCancel} color="primary">
             Cancel
           </Button>
           <Button onClick={handleClose} color="primary">
