@@ -27,7 +27,6 @@ export default function Today() {
 
   const handleClose = () => {
     setOpen(false);
-
   };
 
   const handleInputChange = e => {
@@ -39,10 +38,50 @@ export default function Today() {
     setOpen(false);
   };
 
+  const handleEdit = () => {
+    setOpen(true);
+    /**return(<div>
+    <Dialog open={open} onClose={handleClose}>
+      <DialogContent>
+        <DialogContentText>
+          Edit your goal for today.
+        </DialogContentText>
+        <TextField
+          id="outlined-basic" 
+          variant="outlined"
+          autoFocus
+          value={goal}
+          margin="dense"
+          fullWidth
+          onChange={handleInputChange}
+        />
+      </DialogContent>
+      <DialogActions>
+        <Button onClick={handleClose} color="primary">
+          Cancel
+        </Button>
+        <Button onClick={handleClose} color="primary">
+          Add
+        </Button>
+      </DialogActions>
+    </Dialog>
+  </div>)**/
+  }
+
+
   // button variable to hold changes in the body - show goal if set, or show button
   let button;
-  if (goal !== "" && open === false) {
-    button = <p>{goal}</p>
+  if (goal !== "") {
+    button = 
+      <div>
+        <Button variant="outlined" color="primary" className={classes.margin} onClick={handleEdit}>
+          Edit
+        </Button>
+        <Button variant="outlined" color="primary" className={classes.margin} onClick={handleCancel}>
+          Delete
+        </Button>
+        <p>{goal}</p>
+      </div>
   } else {
     button = <Button variant="outlined" color="primary" className={classes.margin} onClick={handleClickOpen}>
       Add One Goal
