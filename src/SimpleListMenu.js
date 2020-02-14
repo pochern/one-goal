@@ -27,7 +27,7 @@ const options = [
 export default function SimpleListMenu() {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(1);
+  const [selectedIndex, setSelectedIndex] = React.useState(0);
   const handleClickListItem = event => {
     setAnchorEl(event.currentTarget);
   };
