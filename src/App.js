@@ -1,13 +1,13 @@
 import React from 'react';
 import './App.css';
-import Today from './Today';
+import SimpleListMenu from './SimpleListMenu'
 
 const theme = {};
 
 function App() {
   return (
     <div className = 'App'>
-      <Today/>
+      <SimpleListMenu/>
     </div>
   
   );
