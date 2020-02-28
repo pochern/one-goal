@@ -25,6 +25,27 @@ export default function Today(props) {
     if(goal == null) setGoal(props.savedGoal2)
   }, [goal, props.savedGoal2])
 
+
+  const data = {
+    'goal': goal,
+  }
+
+  fetch('/goals.json', {
+    method: "POST",
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body:  JSON.stringify(data)
+  })
+    .then(function(response){ 
+    return response.json();   
+    })
+    .then(function(data){ 
+      console.log('post', data)
+    });
+  
+  
   const handleClickOpen = () => {
     setOpen(true);
   };

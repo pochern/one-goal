@@ -71,7 +71,7 @@ export default function SimpleListMenu(props) {
           </MenuItem>
         ))}
       </Menu>
-      <Today savedGoal2={props.savedGoal}/>
+      <Today setData={props.setData} savedGoal={props.savedGoal}/>
     </div>
   );
 }

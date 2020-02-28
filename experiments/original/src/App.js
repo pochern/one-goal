@@ -17,7 +17,7 @@ function App() {
 
   return (
     <div className = 'App'>
-      <SimpleListMenu savedGoal={data.goal}/>
+      <SimpleListMenu setData={setData} savedGoal={data.goal}/>
     </div>
   
   );
