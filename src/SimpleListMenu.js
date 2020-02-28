@@ -24,7 +24,7 @@ const options = [
   'Unfinished Goals',
 ];
 
-export default function SimpleListMenu() {
+export default function SimpleListMenu(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
@@ -71,7 +71,7 @@ export default function SimpleListMenu() {
           </MenuItem>
         ))}
       </Menu>
-      <Today/>
+      <Today savedGoal2={props.savedGoal}/>
     </div>
   );
 }
