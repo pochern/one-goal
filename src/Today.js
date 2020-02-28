@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -16,10 +16,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Today() {
+export default function Today(props) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [goal, setGoal] = useState("");
+  const [goal, setGoal] = useState(null);
+
+  useEffect(() => {
+    if(goal == null) setGoal(props.savedGoal2)
+  }, [goal, props.savedGoal2])
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -40,32 +44,6 @@ export default function Today() {
 
   const handleEdit = () => {
     setOpen(true);
-    /**return(<div>
-    <Dialog open={open} onClose={handleClose}>
-      <DialogContent>
-        <DialogContentText>
-          Edit your goal for today.
-        </DialogContentText>
-        <TextField
-          id="outlined-basic" 
-          variant="outlined"
-          autoFocus
-          value={goal}
-          margin="dense"
-          fullWidth
-          onChange={handleInputChange}
-        />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={handleClose} color="primary">
-          Cancel
-        </Button>
-        <Button onClick={handleClose} color="primary">
-          Add
-        </Button>
-      </DialogActions>
-    </Dialog>
-  </div>)**/
   }
 
 
