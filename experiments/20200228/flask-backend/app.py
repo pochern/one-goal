@@ -11,7 +11,7 @@ def get_data():
     if DATA_PATH:
         with open(DATA_PATH, 'r') as f:
             datastore = json.load(f)
-    return datastore
+    return json.dumps(datastore)
 
 def write_json(data):
     with open(DATA_PATH, 'w') as f:
@@ -21,15 +21,13 @@ def write_json(data):
 @app.route('/data.json', methods=['POST'])
 def set_data():
     # import pudb; pudb.set_trace()
-    print(request.get_json())
-    file_data = get_data()
-    temp = file_data['goal']
+    file_data = json.loads(get_data())
 
     # python object to be appended
     new_data = request.get_json()
 
     # append data to file
-    temp.append(new_data)
+    file_data.append(new_data)
 
     write_json(file_data)
     return request.get_json()
