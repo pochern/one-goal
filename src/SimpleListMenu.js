@@ -26,6 +26,7 @@ const options = [
 
 export default function SimpleListMenu(props) {
   const classes = useStyles();
+  const {setData, savedGoal} = props
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectedIndex, setSelectedIndex] = React.useState(0);
   const handleClickListItem = event => {
@@ -71,7 +72,7 @@ export default function SimpleListMenu(props) {
           </MenuItem>
         ))}
       </Menu>
-      <Today setData={props.setData} savedGoal={props.savedGoal}/>
+      <Today setData={setData} savedGoal={savedGoal}/>
     </div>
   );
 }
