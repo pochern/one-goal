@@ -25,7 +25,7 @@ function App() {
       return response.json();
     })
     .then((data) => {
-      setNewText(data.goal[data.goal.length-1].text); // last JSON obj from array
+      setNewText(data[data.length-1].text); // last JSON obj from array
     });
   }, []); // [] makes it only load once; does not depend on any values changing
 
