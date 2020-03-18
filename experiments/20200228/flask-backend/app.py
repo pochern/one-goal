@@ -1,36 +1,38 @@
 from flask import Flask, render_template, request
-import json
+from flask_sqlalchemy import SQLAlchemy
+
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+db = SQLAlchemy(app)
 
+class Goal(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(80), unique=True, nullable=False)
+    status = db.Column(db.String(10), unique=False, nullable=False)
 
-DATA_PATH = 'data.json' 
-
+    def __repr__(self):
+        return '<Goal %r>' % self.text
 
 @app.route('/data.json', methods=['GET'])
 def get_data():
-    if DATA_PATH:
-        with open(DATA_PATH, 'r') as f:
-            datastore = json.load(f)
-    return json.dumps(datastore)
-
-def write_json(data):
-    with open(DATA_PATH, 'w') as f:
-        json.dump(data, f, indent=4)
-
+    goals = Goal.query.all()
+    return {
+        'goals': [{
+            'id': goal.id,
+            'text': goal.text,
+            'status': goal.status,
+        } for goal in goals],
+    }
 
 @app.route('/data.json', methods=['POST'])
 def set_data():
-    # import pudb; pudb.set_trace()
-    file_data = json.loads(get_data())
-
-    # python object to be appended
-    new_data = request.get_json()
-
-    # append data to file
-    file_data.append(new_data)
-
-    write_json(file_data)
-    return request.get_json()
+    request_text = request.form['text']
+    request_status = request.form['status']
+    aGoal = Goal(text=request_text, status=request_status)
+    db.session.add(aGoal)
+    db.session.commit()
+    
+    return request.form
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=3100)
