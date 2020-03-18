@@ -20,21 +20,20 @@ function App() {
   // load text from backend using useEffect with fetch GET request 
   // default method=GET
   useEffect(() => {
-      fetch('http://localhost/data')  // location on server
+      fetch('/data')  // location on server
     .then((response) => {
       return response.json();
     })
     .then((data) => {
-      setNewText(data[data.length-1].text); // last JSON obj from array
+      setNewText(data.goals[data.goals.length-1].text); // last JSON obj from array
     });
   }, []); // [] makes it only load once; does not depend on any values changing
 
   useEffect(() => {
     if(value === newText && value !== '' && newText !== '') {
       console.log('in here')
-      const updatedData = { 'text': newText };
-
-      fetch('http://localhost/data', {
+      const updatedData = {'text': newText, 'status': 'Done'};
+      fetch('/data', {
         method: 'POST', // or 'PUT'
         headers: {
             'Content-Type': 'application/json',
