@@ -12,8 +12,7 @@ function App() {
       return response.json()
     })
     .then((data) => {
-      console.log(data)
-      setGoalData(data[data.length-1].text)
+      setGoalData(data.goals[data.goals.length-1].text)
     })
 	}, [])
 
