@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
+import React, { useState, useEffect } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
 
 const useStyles = makeStyles(theme => ({
   margin: {
@@ -14,66 +14,71 @@ const useStyles = makeStyles(theme => ({
   extendedIcon: {
     marginRight: theme.spacing(1),
   },
-}));
+}))
 
 export default function Today(props) {
   const {setData, savedGoal} = props
-  const classes = useStyles();
-  const [open, setOpen] = useState(false);
-  const [goal, setGoal] = useState(null);
+  const classes = useStyles()
+  const [open, setOpen] = useState(false)
+  const [goal, setGoal] = useState(null)
+  const [newGoal, setNewGoal] = useState('')
 
   useEffect(() => {
-    if(goal == null) setGoal(savedGoal)
+    if(goal == null && savedGoal) // app starts with goal null and if savedGoal is true
+      setNewGoal(savedGoal)
   }, [goal, savedGoal])
 
+  useEffect(() => {
+    if(goal === newGoal && goal !== '' && newGoal !== '') {
+      const updatedData = { 'text': newGoal, 'status': 'Done' }
+      // POST request
+      fetch('data', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedData),
+      })
+      .then((response) => response.json())
+      .then((updatedData) => {
+        console.log('Success:', updatedData)
+      })
+      .catch((error) => {
+        console.error('Error:', error)
+      })
+    }
+  }, [goal, newGoal])
 
-  const data = {
-    'goal': goal,
+  const handleClickOpen = () => {
+    setOpen(true)
   }
 
-  fetch('/goals.json', {
-    method: "POST",
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body:  JSON.stringify(data)
-  })
-    .then(function(response){ 
-    return response.json();   
-    })
-    .then(function(data){ 
-      console.log('post', data)
-    });
-  
-  
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
+  const handleAdd = (e) => {
+    setOpen(false)
+    setNewGoal(goal)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
   
   const handleInputChange = e => {
-    //setGoal(e.target.value);
-    console.log({'goal': e.target.value})
-    setData({'goal': e.target.value})
-  };
+    setGoal(e.target.value)
+  }
 
   const handleCancel = () => {
-    setGoal("");
-    setOpen(false);
-  };
+    setGoal("")
+    setOpen(false)
+  }
 
   const handleEdit = () => {
-    setOpen(true);
+    setOpen(true)
   }
 
 
   // button variable to hold changes in the body - show goal if set, or show button
-  let button;
-  if (goal !== "") {
+  let button
+  if (goal !== '') {
     button = 
       <div>
         <Button variant="outlined" color="primary" className={classes.margin} onClick={handleEdit}>
@@ -82,7 +87,7 @@ export default function Today(props) {
         <Button variant="outlined" color="primary" className={classes.margin} onClick={handleCancel}>
           Delete
         </Button>
-        <p>{goal}</p>
+        <p>{newGoal}</p>
       </div>
   } else {
     button = <Button variant="outlined" color="primary" className={classes.margin} onClick={handleClickOpen}>
@@ -103,7 +108,7 @@ export default function Today(props) {
             id="outlined-basic" 
             variant="outlined"
             autoFocus
-            value={goal}
+            value={(goal) ? goal : ''}
             margin="dense"
             fullWidth
             onChange={handleInputChange}
@@ -113,7 +118,7 @@ export default function Today(props) {
           <Button onClick={handleCancel} color="primary">
             Cancel
           </Button>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleAdd} color="primary">
             Add
           </Button>
         </DialogActions>
