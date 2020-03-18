@@ -26,8 +26,9 @@ def get_data():
 
 @app.route('/data.json', methods=['POST'])
 def set_data():
-    request_text = request.form['text']
-    request_status = request.form['status']
+    json_data = request.get_json()
+    request_text = json_data['text']
+    request_status = json_data['status']
     aGoal = Goal(text=request_text, status=request_status)
     db.session.add(aGoal)
     db.session.commit()
