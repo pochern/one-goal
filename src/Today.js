@@ -1,11 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
+import { useDispatch, useSelector } from 'react-redux'
+import { getGoals } from './selectors'
+import { ADD_GOAL } from './constants'
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
+import FormControlLabel from '@material-ui/core/FormControlLabel'
+import Checkbox from '@material-ui/core/Checkbox'
+import FormGroup from '@material-ui/core/FormGroup'
 
 const useStyles = makeStyles(theme => ({
   margin: {
@@ -14,14 +20,22 @@ const useStyles = makeStyles(theme => ({
   extendedIcon: {
     marginRight: theme.spacing(1),
   },
+  formControl: {
+    margin: theme.spacing(3),
+  },
 }))
 
 export default function Today(props) {
+
   const {setData, savedGoal} = props
   const classes = useStyles()
   const [open, setOpen] = useState(false)
   const [goal, setGoal] = useState(null)
   const [newGoal, setNewGoal] = useState('')
+  const [goalChecked, setGoalChecked] = useState(false)
+
+  const goals = useSelector(getGoals)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if(goal == null && savedGoal) // app starts with goal null and if savedGoal is true
@@ -30,7 +44,7 @@ export default function Today(props) {
 
   useEffect(() => {
     if(goal === newGoal && goal !== '' && newGoal !== '') {
-      const updatedData = { 'text': newGoal, 'status': 'Done' }
+      const updatedData = { 'text': newGoal, 'status': 'Unfinished' }
       // POST request
       fetch('data', {
         method: 'POST',
@@ -56,6 +70,8 @@ export default function Today(props) {
   const handleAdd = (e) => {
     setOpen(false)
     setNewGoal(goal)
+    // dispatching action
+    dispatch({ type: ADD_GOAL })
   }
 
   const handleClose = () => {
@@ -75,6 +91,9 @@ export default function Today(props) {
     setOpen(true)
   }
 
+  const handleChange = () => {
+    setGoalChecked(!goalChecked);
+  }
 
   // button variable to hold changes in the body - show goal if set, or show button
   let button
@@ -87,7 +106,19 @@ export default function Today(props) {
         <Button variant="outlined" color="primary" className={classes.margin} onClick={handleCancel}>
           Delete
         </Button>
-        <p>{newGoal}</p>
+        <FormGroup row>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={goalChecked}
+                onChange={handleChange}
+                name="goalChecked"
+                color="primary"
+              />
+            }
+            label={newGoal}
+          />
+        </FormGroup>
       </div>
   } else {
     button = <Button variant="outlined" color="primary" className={classes.margin} onClick={handleClickOpen}>
