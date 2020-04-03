@@ -1,12 +1,13 @@
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import Today from './Today';
-import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
+import React, { useState, useEffect } from 'react'
+import { makeStyles } from '@material-ui/core/styles'
+import List from '@material-ui/core/List'
+import ListItem from '@material-ui/core/ListItem'
+import ListItemText from '@material-ui/core/ListItemText'
+import MenuItem from '@material-ui/core/MenuItem'
+import Menu from '@material-ui/core/Menu'
+import Today from './Today'
+import CalendarView from './CalendarView'
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -16,32 +17,44 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     backgroundColor: theme.palette.background.paper,
   },
-}));
+}))
 
 const options = [
   'Today',
   'Calendar',
   'Unfinished Goals',
-];
+]
 
 export default function SimpleListMenu(props) {
-  const classes = useStyles();
+  const classes = useStyles()
   const {setData, savedGoal} = props
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selectedIndex, setSelectedIndex] = React.useState(0);
+  const [anchorEl, setAnchorEl] = useState(null)
+  const [selectedIndex, setSelectedIndex] = useState(0)
+  const [appView, setAppView] = useState(null)
+
+
   const handleClickListItem = event => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
 
   const handleMenuItemClick = (event, index) => {
-    setSelectedIndex(index);
-    setAnchorEl(null);
-  };
+    setSelectedIndex(index)
+    setAnchorEl(null)
+  }
 
   const handleClose = () => {
-    setAnchorEl(null);
-  };
-
+    setAnchorEl(null)
+  }
+ 
+  useEffect( () => {
+    if (selectedIndex === 0) {
+      setAppView(<Today setData={setData} savedGoal={savedGoal}/>)
+    console.log(savedGoal)
+    }
+    else if (selectedIndex === 1)
+      setAppView(<CalendarView setData={setData} savedGoal={savedGoal}/>)
+  }, [selectedIndex, savedGoal])
+  
   return (
     <div className={classes.root}>
       <List component='nav'>
@@ -72,7 +85,7 @@ export default function SimpleListMenu(props) {
           </MenuItem>
         ))}
       </Menu>
-      <Today setData={setData} savedGoal={savedGoal}/>
+      {appView}
     </div>
-  );
+  )
 }
