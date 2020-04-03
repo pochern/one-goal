@@ -8,6 +8,7 @@ db = SQLAlchemy(app)
 class Goal(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(80), unique=True, nullable=False)
+    # status is done in enum - restricts string to certain values
     status = db.Column(db.String(10), unique=False, nullable=False)
 
     def __repr__(self):
