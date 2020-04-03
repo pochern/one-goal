@@ -2,10 +2,12 @@ import React, { useState, useEffect } from 'react';
 import './App.css';
 import SimpleListMenu from './SimpleListMenu'
 
-const theme = {};
+const theme = {}
 
 function App() { 
-  const [goalData, setGoalData] = useState('');
+  const [goalData, setGoalData] = useState('')
+  const [allGoals, setAllGoals] = useState('')
+  const [unfinishedGoals, setUnfinishedGoals] = useState('')
 	useEffect(() => {
     fetch('data')
     .then((response) => {
@@ -13,12 +15,18 @@ function App() {
     })
     .then((data) => {
       setGoalData(data.goals[data.goals.length-1].text)
+      setAllGoals(data.goals)
+      setUnfinishedGoals(data.goals.filter(goal => goal.status === 'Unfinished'))
     })
 	}, [])
 
   return (
     <div className = 'App'>
-      <SimpleListMenu setData={setGoalData} savedGoal={(goalData!=='') && goalData}/>
+      <SimpleListMenu 
+        unfinishedSavedGoals={(unfinishedGoals!=='') && unfinishedGoals} 
+        savedGoal={(goalData!=='') && goalData}
+        allSavedGoals={(allGoals!=='' && allGoals)}
+      />
     </div>
   
   );
