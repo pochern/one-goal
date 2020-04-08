@@ -27,12 +27,10 @@ const options = [
 
 export default function SimpleListMenu(props) {
   const classes = useStyles()
-  const {setData, savedGoal} = props
+  const {setData, savedGoal, savedGoalId, savedGoalCompleted} = props
   const [anchorEl, setAnchorEl] = useState(null)
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [appView, setAppView] = useState(null)
-
-
   const handleClickListItem = event => {
     setAnchorEl(event.currentTarget)
   }
@@ -45,15 +43,14 @@ export default function SimpleListMenu(props) {
   const handleClose = () => {
     setAnchorEl(null)
   }
- 
+
   useEffect( () => {
     if (selectedIndex === 0) {
-      setAppView(<Today setData={setData} savedGoal={savedGoal}/>)
-    console.log(savedGoal)
+      setAppView(<Today setData={setData} savedGoalId={savedGoalId} savedGoal={savedGoal} savedGoalCompleted={savedGoalCompleted}/>)
     }
     else if (selectedIndex === 1)
       setAppView(<CalendarView setData={setData} savedGoal={savedGoal}/>)
-  }, [selectedIndex, savedGoal])
+  }, [selectedIndex, savedGoal, savedGoalId, savedGoalCompleted])
   
   return (
     <div className={classes.root}>
