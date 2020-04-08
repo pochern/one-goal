@@ -27,12 +27,16 @@ const useStyles = makeStyles(theme => ({
 
 export default function Today(props) {
 
-  const {setData, savedGoal} = props
+  const {setData, savedGoal, savedGoalId, savedGoalCompleted} = props
   const classes = useStyles()
   const [open, setOpen] = useState(false)
   const [goal, setGoal] = useState(null)
+  const [goalId, setGoalId] = useState(null)
   const [newGoal, setNewGoal] = useState('')
-  const [goalChecked, setGoalChecked] = useState(false)
+  const [goalCompleted, setGoalCompleted] = useState(null)
+  const [clickedEdit, setClickedEdit] = useState(false)
+  const [clickedDelete, setClickedDelete] = useState(false)
+  const [clickedCheckbox, setClickedCheckbox] = useState(false)
 
   const goals = useSelector(getGoals)
   const dispatch = useDispatch()
@@ -43,25 +47,76 @@ export default function Today(props) {
   }, [goal, savedGoal])
 
   useEffect(() => {
-    if(goal === newGoal && goal !== '' && newGoal !== '') {
-      const updatedData = { 'text': newGoal, 'status': 'Unfinished' }
+    if(goalId == null && savedGoalId)
+      setGoalId(savedGoalId)
+  }, [goalId, savedGoalId])
+
+  useEffect(() => {
+    if(goalCompleted == null && savedGoalCompleted)
+      setGoalCompleted(savedGoalCompleted)
+  }, [goalCompleted, savedGoalCompleted])
+
+  useEffect(() => {
+    if(clickedEdit == false && goal === newGoal && goal !== '' && newGoal !== '') {
+      const addedData = { 'text': newGoal }
       // POST request
       fetch('data', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(updatedData),
+        body: JSON.stringify(addedData)
       })
-      .then((response) => response.json())
-      .then((updatedData) => {
-        console.log('Success:', updatedData)
+      .then((addedData) => {
+        console.log('Success:', addedData)
       })
       .catch((error) => {
         console.error('Error:', error)
       })
+    }else if(clickedEdit == true && goal === newGoal || clickedCheckbox) {
+      const editedData = {
+        'id': goalId,
+        'text': newGoal,
+        'completed': goalCompleted,
+      }
+      fetch('data', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(editedData)
+      })
+      .then((editedData) => {
+        console.log('Success:', editedData)
+      })
+      .catch((error) => {
+        console.error('Error:', error)
+      })
+      setClickedEdit(false)
+      setClickedCheckbox(false)
+    }else if(clickedDelete == true) {
+      console.log('you clicked delete')
+      const editedData = {
+        'id': goalId,
+        'text': newGoal,
+        'completed': false
+      }
+      fetch('data/'+goalId, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then((editedData) => {
+        console.log('Success:', goalId)
+      })
+      .catch((error) => {
+        console.error('Error:', error)
+      })
+      setClickedDelete(false)
+      setClickedCheckbox(false)
     }
-  }, [goal, newGoal])
+  }, [goal, newGoal, clickedDelete, clickedEdit, clickedCheckbox])
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -70,6 +125,7 @@ export default function Today(props) {
   const handleAdd = (e) => {
     setOpen(false)
     setNewGoal(goal)
+    setGoalChecked(false)
     // dispatching action
     dispatch({ type: ADD_GOAL })
   }
@@ -82,17 +138,23 @@ export default function Today(props) {
     setGoal(e.target.value)
   }
 
+  const handleDelete = () => {
+    setClickedDelete(true)
+  }
+
   const handleCancel = () => {
-    setGoal("")
+    setGoal(null)
     setOpen(false)
   }
 
   const handleEdit = () => {
     setOpen(true)
+    setClickedEdit(true)
   }
 
   const handleChange = () => {
-    setGoalChecked(!goalChecked);
+    setGoalCompleted(!goalCompleted);
+    setClickedCheckbox(true)
   }
 
   // button variable to hold changes in the body - show goal if set, or show button
@@ -103,16 +165,16 @@ export default function Today(props) {
         <Button variant="outlined" color="primary" className={classes.margin} onClick={handleEdit}>
           Edit
         </Button>
-        <Button variant="outlined" color="primary" className={classes.margin} onClick={handleCancel}>
+        <Button variant="outlined" color="primary" className={classes.margin} onClick={handleDelete}>
           Delete
         </Button>
         <FormGroup row>
           <FormControlLabel
             control={
               <Checkbox
-                checked={goalChecked}
+                checked={goalCompleted}
                 onChange={handleChange}
-                name="goalChecked"
+                name="goalCompleted"
                 color="primary"
               />
             }
