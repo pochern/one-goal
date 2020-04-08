@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
-import { Calendar } from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
+import Calendar from 'react-calendar'
 
 const useStyles = makeStyles(theme => ({
   margin: {
@@ -19,10 +19,7 @@ export default function CalendarView(props) {
 
   return (
     <div>
-      <Calendar
-      />
+      <Calendar />
     </div>
   )
-}
-  
-  
+}  
