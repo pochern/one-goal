@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import { useSelector, useDispatch } from 'react-redux'
+import { getGoals } from './actions/index'
 import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
-import Divider from '@material-ui/core/Divider';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -66,22 +67,35 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const handleIcons = (index) => {
-  if(index == 0) { return <HomeIcon fontSize='large' color='#CCCCCC'/> }
-  if(index == 1) { return <DateRange fontSize='large' /> }
-  if(index == 2) { return <EventBusy fontSize='large' /> }
+  if(index === 0) { return <HomeIcon fontSize='large' color='#CCCCCC'/> }
+  if(index === 1) { return <DateRange fontSize='large' /> }
+  if(index === 2) { return <EventBusy fontSize='large' /> }
 }
 
-const handleAppView = (view) => {
+const appView = (view) => {
   //use switch
-  if(view == 0) { return <TodayView /> }
-  if(view == 1) { return <CalendarView /> }
-  if(view == 2) { return <UnfinishedGoalsView /> }
+  switch(view) {
+    case 0:
+      return <TodayView />
+    case 1:
+      return <CalendarView />
+    case 2:
+      return <UnfinishedGoalsView />
+    default:
+      return <TodayView />
+  }
 }
 
 export default function AppContent() {
   const classes = useStyles();
 
   const [view, setView] = useState(0)
+
+  const dispatch = useDispatch()
+  const goals = useSelector(state => state.goals)
+  useEffect(() => {
+    dispatch(getGoals())
+  }, [dispatch])
 
   return (
     <ThemeProvider theme={theme}>
@@ -105,12 +119,12 @@ export default function AppContent() {
                 classes={{root: classes.item}}
               >
                 <ListItemIcon 
-                  classes={{root: view == index ? classes.iconActive : classes.iconInactive}} 
+                  classes={{root: view === index ? classes.iconActive : classes.iconInactive}} 
                   minWidth='0'
                 >
                   {handleIcons(index)}
                 </ListItemIcon>
-                <ListItemText disableTypography primary={text} className={view == index ? classes.active : classes.inactive} />
+                <ListItemText disableTypography primary={text} className={view === index ? classes.active : classes.inactive} />
               </ListItem>
             ))}
           </List>
@@ -118,7 +132,7 @@ export default function AppContent() {
       </Drawer>
       <main className={classes.content}>
         <Toolbar />
-        {handleAppView(view)}
+        {appView(view)}
      </main>
     </div>
     </ThemeProvider>
