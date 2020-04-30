@@ -1,8 +1,10 @@
-import React from 'react'
-import { makeStyles, ThemeProvider } from '@material-ui/core/styles'
+import React, {useEffect} from 'react'
+import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import dateFormat from 'dateformat'
-import Button from '@material-ui/core/Button'
+import { useSelector, useDispatch } from 'react-redux'
+import { getGoals } from './actions/index'
+import TodayGoal from './TodayGoal'
 
 const useStyles = makeStyles({
   root: {
@@ -23,12 +25,7 @@ export default function TodayView(){
       <Typography variant='h3' gutterBottom={true}>
         {dateToday}
       </Typography>
-      <Typography variant='body1' gutterBottom={true}>
-        You have no goal set for today.
-      </Typography>
-      <Button variant='contained' color='secondary' size='large'>
-        ADD GOAL
-      </Button> 
+      <TodayGoal />
     </div>
   )
 }
