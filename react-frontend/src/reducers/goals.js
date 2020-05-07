@@ -1,9 +1,13 @@
-const goalReducer = (state = [], action) => {
+const goalReducer = (state = {}, action) => {
   switch(action.type) {
     case 'GET_GOALS':
-      return {...state, loading: true}
+      return {loading: true}
     case 'GOALS_RECEIVED':
-      return {...state, goals: action.json, loading: false}
+      const { payload } = action
+      return { goals: payload, loading: false}
+    case 'DELETE_GOAL':
+      const { goalId } = action
+      return state.goals.reduce( goal => goal.id === goalId)
     default:
       return state
   }
