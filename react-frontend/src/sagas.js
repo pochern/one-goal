@@ -4,10 +4,22 @@ function* fetchGoals(action) {
   try {
     // do api call
     console.log('doing api call')
-    const data = yield fetch('data')
+    const data = yield fetch('/data.json')
     .then(response => response.json())
     console.log('goal data', data.goals[0].text)
-    yield put({type: 'GOALS_RECEIVED', json: data.goals[0].text})
+    yield put({type: 'GOALS_RECEIVED', payload: data.goals})
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+function* deleteGoal(action) {
+  try {
+    // do api call
+    console.log('doing api call')
+    const data = yield fetch('/data.json/' + action.id, {method: 'DELETE'}) // add type of request and json body
+    .then(data => data.json())
+    yield put({type: 'GET_GOALS'}) // after delete what do you action do you want to perform?
   } catch (e) {
     console.log(e)
   }
@@ -23,3 +35,7 @@ export default function* mySaga() {
   yield takeLatest('GET_GOALS', fetchGoals);
 }
 
+
+export function* deleteSaga() {
+  yield takeLatest('DELETE_GOAL', deleteGoal)
+}
