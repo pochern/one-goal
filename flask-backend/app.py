@@ -2,7 +2,7 @@ from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./test.db'
 db = SQLAlchemy(app)
 
 class Goal(db.Model):
@@ -51,9 +51,9 @@ def update_data():
 def delete_data(id):
     Goal.query.filter(Goal.id == id).delete()
     db.session.commit()
-
+    # make sure this is deleting items and how would you know if the item was deleted 
     return request.form
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=3100)
+    app.run(debug=True, host='0.0.0.0', port=8080)
