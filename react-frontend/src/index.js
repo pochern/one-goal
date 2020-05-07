@@ -11,7 +11,6 @@ import { Provider } from 'react-redux'
 import { logger } from 'redux-logger'
 import actionWatcher from './sagas'
 
-
 const sagaMiddleware = createSagaMiddleware()
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 
