@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
-import { useSelector, useDispatch } from 'react-redux'
-import { getGoals } from './actions/index'
 import Drawer from '@material-ui/core/Drawer';
 import Toolbar from '@material-ui/core/Toolbar';
 import List from '@material-ui/core/List';
@@ -90,12 +88,6 @@ export default function AppContent() {
   const classes = useStyles();
 
   const [view, setView] = useState(0)
-
-  const dispatch = useDispatch()
-  const goals = useSelector(state => state.goals)
-  useEffect(() => {
-    dispatch(getGoals())
-  }, [dispatch])
 
   return (
     <ThemeProvider theme={theme}>
