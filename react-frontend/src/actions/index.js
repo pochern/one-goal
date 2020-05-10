@@ -3,3 +3,17 @@ export const getGoals = () => {
     type: 'GET_GOALS'
   }
 }
+
+export const checkGoal = (isCompleted, goal) => {
+  return {
+    type: 'CHECK_GOAL',
+    payload: { isCompleted, goal },
+  }
+}
+
+export const deleteGoal = (goalId) => {
+  return {
+    type: 'DELETE_GOAL',
+    payload: { goalId },
+  }
+}
