@@ -6,7 +6,7 @@ const goalReducer = (state = {}, action) => {
       return {loading: true}
     case 'GOALS_RECEIVED':
       const { payload } = action
-      return { goals: payload, loading: false}
+      return { goals: payload, loading: false }
     case 'DELETE_GOAL':
       const { goalId } = action.payload
       return state.goals.reduce( goal => goal.id === goalId)
@@ -15,6 +15,14 @@ const goalReducer = (state = {}, action) => {
       return produce(state, draft => {
         //change goal.completed value to isCompleted
         draft.goals.find(element => element.id===goal.id).completed = isCompleted
+      })
+    case 'ADD_GOAL':
+      const { goalText } = action.payload
+      return produce(state, draft => {
+        draft.goals.push({
+          'text': goalText,
+          'completed': false,
+        })
       })
     default:
       return state
