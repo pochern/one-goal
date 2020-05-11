@@ -17,3 +17,10 @@ export const deleteGoal = (goalId) => {
     payload: { goalId },
   }
 }
+
+export const addGoal = (goalText) => {
+  return {
+    type: 'ADD_GOAL',
+    payload: { goalText },
+  }
+}
