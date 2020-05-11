@@ -2,7 +2,6 @@ import { put, takeLatest, all } from 'redux-saga/effects'
 
 function* fetchGoals(action) {
   try {
-    // do api call
     const data = yield fetch('/data.json')
     .then(response => response.json())
     yield put({type: 'GOALS_RECEIVED', payload: data.goals})
@@ -14,8 +13,6 @@ function* fetchGoals(action) {
 function* deleteGoal(action) {
   const goalId = action.payload.goalId
   try {
-    console.log('in delete')
-    // do api call
     const data = yield fetch('/data.json',
       {method: 'DELETE',
         headers: {
@@ -24,7 +21,7 @@ function* deleteGoal(action) {
         body: JSON.stringify({'id': goalId,})
       })
     .then(data => data.json())
-    yield put({type: 'GET_GOALS'}) // after delete what do you action do you want to perform?
+    yield put({type: 'GET_GOALS'})
   } catch (e) {
     console.log(e)
   }
@@ -34,7 +31,6 @@ function* checkGoal(action) {
   const goal = action.payload.goal
   const isCompleted = action.payload.isCompleted
   try {
-    // do api call
     const data = yield fetch('/data.json',
       {method: 'PUT',
         headers: {
@@ -42,9 +38,27 @@ function* checkGoal(action) {
                 },
         body: JSON.stringify({'id': goal.id, 'text': goal.text, 'completed': isCompleted})
       }
-    ) // add type of request and json body
+    )
     .then(data => data.json())
     yield put({type: 'GOALS_CHECKED'})
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+function* addGoal(action) {
+  const goalText = action.payload.goalText
+  try {
+    console.log('about to add')
+    const data = yield fetch('/data.json',
+      {method: 'POST',
+        headers: {
+                'Content-Type': 'application/json',
+              },
+        body: JSON.stringify({'text': goalText,})
+      })
+    .then(data => data.json())
+    yield put({type: 'GET_GOALS'})
   } catch (e) {
     console.log(e)
   }
@@ -61,6 +75,7 @@ export default function* () {
     getSaga(),
     deleteSaga(),
     checkSaga(),
+    addSaga(),
   ])
 }
 
@@ -74,4 +89,8 @@ export function* deleteSaga() {
 
 export function* checkSaga() {
   yield takeLatest('CHECK_GOAL', checkGoal)
+}
+
+export function* addSaga() {
+  yield takeLatest('ADD_GOAL', addGoal)
 }
