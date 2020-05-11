@@ -31,7 +31,7 @@ def add_data():
     aGoal = Goal(text=request_text)
     db.session.add(aGoal)
     db.session.commit()
-    
+
     return request.form
 
 @app.route('/data.json', methods=['PUT'])
@@ -47,11 +47,13 @@ def update_data():
 
     return request.form
 
-@app.route('/data.json/<int:id>', methods=['DELETE'])
-def delete_data(id):
-    Goal.query.filter(Goal.id == id).delete()
+@app.route('/data.json', methods=['DELETE'])
+def delete_data():
+    json_data = request.get_json()
+    request_id = json_data['id']
+    Goal.query.filter(Goal.id == request_id).delete()
     db.session.commit()
-    # make sure this is deleting items and how would you know if the item was deleted 
+
     return request.form
 
 
