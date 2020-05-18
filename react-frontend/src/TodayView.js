@@ -29,6 +29,7 @@ const useStyles = makeStyles({
 export default function TodayView(){
   const now = new Date()
   const dateToday = dateFormat(now, "mmmm d, yyyy")
+  const dbDateFormat = dateFormat(now, "mm/dd/yy")
   const classes = useStyles()
 
 	const [open, setOpen] = useState(false)
@@ -97,7 +98,7 @@ export default function TodayView(){
   }
 
   const showingBody = (goals, goalReducer) => {
-    if(goalReducer.loading===false && goals.length>0) {
+    if(goalReducer.loading===false && goals.length>0 && goals[goals.length-1].date === dbDateFormat) {
       return(
           <div>
             <FormGroup row>
@@ -136,7 +137,7 @@ export default function TodayView(){
 							</DialogActions>
 						</Dialog>
        </div>)
-    } else if(goalReducer.loading===false && goals.length===0) {
+    } else if(goalReducer.loading===false && (goals.length===0 || goals[goals.length-1].date !== dbDateFormat)) {
       return(
           <div>
             <Typography variant='body1' gutterBottom={true}>
