@@ -24,3 +24,10 @@ export const addGoal = (goalText) => {
     payload: { goalText },
   }
 }
+
+export const editGoal = (goalText, goal) => {
+  return {
+    type: 'EDIT_GOAL',
+    payload: { goalText, goal },
+  }
+}
