@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from flask_sqlalchemy import SQLAlchemy
+from datetime import datetime
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///./test.db'
@@ -9,6 +10,7 @@ class Goal(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.String(80), unique=False, nullable=False)
     completed = db.Column(db.Boolean, default=False, nullable=False)
+    date = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
         return '<Goal %r>' % self.text
@@ -21,6 +23,7 @@ def get_data():
             'id': goal.id,
             'text': goal.text,
             'completed': goal.completed,
+            'date': goal.date.strftime("%m/%d/%y"),
         } for goal in goals],
     }
 
