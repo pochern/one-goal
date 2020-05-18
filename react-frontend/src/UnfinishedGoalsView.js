@@ -2,52 +2,34 @@ import React, { useState, useEffect } from 'react'
 import MaterialTable from 'material-table'
 import { Paper } from '@material-ui/core'
 import { useSelector, useDispatch } from 'react-redux'
-import { getGoals, checkGoal, deleteGoal } from './actions/index'
+import { checkGoal, deleteGoal } from './actions/index'
 
 export default function UnfinishedGoalsView(){
-  const [entries, setEntries] = useState({
-    data: [
-      {
-        goal: "",
-      }
-    ]
-  })
-
-  const [state] = useState({
-    columns: [
-      { title: 'Goal', field: 'goal', }
-    ],
-  })
+  const columns = [
+    { title: 'Goal', field: 'goal', }
+  ]
 
   const dispatch = useDispatch()
   const goalReducer = useSelector(state => state.goalReducer)
-  const goals = goalReducer.goalList ? goalReducer.goalList : {}
+  const goals = goalReducer.goalList ? goalReducer.goalList : []
+  const data = goals.filter(goal => goal.completed === false).map(goal => ({goal: goal.text, id: goal.id, completed: goal.completed}))
 
-  useEffect(() => {
-    dispatch(getGoals())
-  }, [])
 
-  useEffect(() => {
-    let data = []
-    goals.forEach(el => {
-      data.push({
-        goal: el.text,
-        id: el.id,
-      })
-    })
-    setEntries({ data: data })
-  }, [])
+  const handleChange = (data) => {
+    const goalData = {text: data[0].goal, id: data[0].id, completed: data[0].completed}
+    dispatch(checkGoal(!data[0].completed, goalData))
+  }
 
   const handleDelete = (data) => {
-    console.log('handle delete data', data[0])
     dispatch(deleteGoal(data[0].id))
   }
+
 
   return(
     <MaterialTable
       title='My Unfinished Goals'
-      columns={state.columns}
-      data={entries.data}
+      columns={columns}
+      data={data}
       options={{
         selection: true,
         headerStyle: {
@@ -62,7 +44,7 @@ export default function UnfinishedGoalsView(){
 				{
 					tooltip: 'Mark All Selected Goals Completed',
 					icon: 'done',
-					onClick: (evt, data) => {alert(data)}
+					onClick: (evt, data) => {handleChange(data)}
 				},
 				{
 					tooltip: 'Remove All Selected Goals',
