@@ -1,5 +1,10 @@
 import { put, takeLatest, all } from 'redux-saga/effects'
 
+const checkForError = response => {
+  if (!response.ok) throw Error(response.statusText);
+  return response.json()
+}
+
 function* fetchGoals(action) {
   try {
     const data = yield fetch('/data.json')
@@ -40,7 +45,6 @@ function* checkGoal(action) {
       }
     )
     .then(data => data.json())
-    yield put({type: 'GOALS_CHECKED'})
   } catch (e) {
     console.log(e)
   }
@@ -49,16 +53,31 @@ function* checkGoal(action) {
 function* addGoal(action) {
   const goalText = action.payload.goalText
   try {
-    console.log('about to add')
     const data = yield fetch('/data.json',
       {method: 'POST',
         headers: {
                 'Content-Type': 'application/json',
               },
-        body: JSON.stringify({'text': goalText,})
+        body: JSON.stringify({'text': goalText})
       })
     .then(data => data.json())
     yield put({type: 'GET_GOALS'})
+  } catch (e) {
+    console.log(e)
+  }
+}
+
+function* editGoal(action) {
+  const { goal, goalText } = action.payload
+  try {
+    const data = yield fetch('/data.json',
+      {method: 'PUT',
+        headers: {
+                'Content-Type': 'application/json',
+              },
+        body: JSON.stringify({'id': goal.id, 'text': goalText, 'completed': goal.completed})
+      })
+    .then(data => data.json())
   } catch (e) {
     console.log(e)
   }
@@ -76,6 +95,7 @@ export default function* () {
     deleteSaga(),
     checkSaga(),
     addSaga(),
+    editSaga(),
   ])
 }
 
@@ -93,4 +113,8 @@ export function* checkSaga() {
 
 export function* addSaga() {
   yield takeLatest('ADD_GOAL', addGoal)
+}
+
+export function* editSaga() {
+  yield takeLatest('EDIT_GOAL', editGoal)
 }
