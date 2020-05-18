@@ -7,7 +7,7 @@ db = SQLAlchemy(app)
 
 class Goal(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String(80), unique=True, nullable=False)
+    text = db.Column(db.String(80), unique=False, nullable=False)
     completed = db.Column(db.Boolean, default=False, nullable=False)
 
     def __repr__(self):
