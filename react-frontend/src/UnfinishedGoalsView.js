@@ -6,13 +6,14 @@ import { checkGoal, deleteGoal } from './actions/index'
 
 export default function UnfinishedGoalsView(){
   const columns = [
-    { title: 'Goal', field: 'goal', }
+    { title: 'Goal', field: 'goal' },
+    { title: 'Date', field: 'date' }
   ]
 
   const dispatch = useDispatch()
   const goalReducer = useSelector(state => state.goalReducer)
   const goals = goalReducer.goalList ? goalReducer.goalList : []
-  const data = goals.filter(goal => goal.completed === false).map(goal => ({goal: goal.text, id: goal.id, completed: goal.completed}))
+  const data = goals.filter(goal => goal.completed === false).map(goal => ({goal: goal.text, id: goal.id, completed: goal.completed, date: goal.date}))
 
 
   const handleChange = (data) => {
