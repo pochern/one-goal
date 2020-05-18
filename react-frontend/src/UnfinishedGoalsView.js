@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import MaterialTable from 'material-table'
 import { Paper } from '@material-ui/core'
 import { useSelector, useDispatch } from 'react-redux'
-import { getGoals, checkGoal } from './actions/index'
+import { getGoals, checkGoal, deleteGoal } from './actions/index'
 
 export default function UnfinishedGoalsView(){
   const [entries, setEntries] = useState({
@@ -20,8 +20,8 @@ export default function UnfinishedGoalsView(){
   })
 
   const dispatch = useDispatch()
-  const goals = useSelector(state => state.goals)
-  const goal = goals.goals ? goals.goals : {}
+  const goalReducer = useSelector(state => state.goalReducer)
+  const goals = goalReducer.goalList ? goalReducer.goalList : {}
 
   useEffect(() => {
     dispatch(getGoals())
@@ -29,13 +29,19 @@ export default function UnfinishedGoalsView(){
 
   useEffect(() => {
     let data = []
-    goal.forEach(el => {
+    goals.forEach(el => {
       data.push({
         goal: el.text,
+        id: el.id,
       })
     })
     setEntries({ data: data })
   }, [])
+
+  const handleDelete = (data) => {
+    console.log('handle delete data', data[0])
+    dispatch(deleteGoal(data[0].id))
+  }
 
   return(
     <MaterialTable
@@ -56,12 +62,12 @@ export default function UnfinishedGoalsView(){
 				{
 					tooltip: 'Mark All Selected Goals Completed',
 					icon: 'done',
-					onClick: (evt, data) => alert('You want to mark completed ' + data.length + ' rows')
+					onClick: (evt, data) => {alert(data)}
 				},
 				{
 					tooltip: 'Remove All Selected Goals',
 					icon: 'delete',
-					onClick: (evt, data) => alert('You want to delete ' + JSON.stringify(data) + ' rows')
+					onClick: (evt, data) => {handleDelete(data)}
 				}
 			]}
     /> 
