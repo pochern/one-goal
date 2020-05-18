@@ -14,7 +14,10 @@ export const theme = createMuiTheme({
 			h3: {
 				color: '#707070'	
 			},
-			body1: {
+			h4: {
+				color: 'black'
+			},
+      body1: {
 				color: '#707070'
 			},
     },
@@ -23,6 +26,14 @@ export const theme = createMuiTheme({
         width: '70%',
         padding: '5%',
         borderRadius: 10
+      },
+    },
+    MuiSvgIcon: {
+      colorDisabled: {
+        color: '#CCCCCC'
+      },
+      colorAction: {
+        color: '#000000'
       },
     },
   },
