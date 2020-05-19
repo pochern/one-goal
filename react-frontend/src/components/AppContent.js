@@ -112,7 +112,6 @@ export default function AppContent() {
               >
                 <ListItemIcon 
                   classes={{root: view === index ? classes.iconActive : classes.iconInactive}} 
-                  minWidth='0'
                 >
                   {handleIcons(index)}
                 </ListItemIcon>
