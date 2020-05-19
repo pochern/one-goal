@@ -17,12 +17,11 @@ export default function UnfinishedGoalsView(){
 
 
   const handleChange = (data) => {
-    const goalData = {text: data[0].goal, id: data[0].id, completed: data[0].completed}
-    dispatch(checkGoal(!data[0].completed, goalData))
+    data.map(el => dispatch(checkGoal(!el.completed, {text: el.goal, id: el.id, completed: el.completed})))
   }
 
   const handleDelete = (data) => {
-    dispatch(deleteGoal(data[0].id))
+    data.map(el => dispatch(deleteGoal(el.id)))
   }
 
 
