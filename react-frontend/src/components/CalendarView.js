@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles';
+import { useSelector } from 'react-redux'
 import Calendar from 'react-calendar'
+import dateFormat from 'dateformat'
 import './CalendarView.css'
-//import 'react-calendar/dist/Calendar.css'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -26,9 +27,27 @@ const useStyles = makeStyles((theme) => ({
 export default function CalendarView(){
   const classes = useStyles()
 
+  const [goalOnDate, setGoalOnDate] = useState('')
+
+  const goalReducer = useSelector(state => state.goalReducer)
+  const goals = goalReducer.goalList ? goalReducer.goalList : []
+
+  const handleClick = (e) => {
+    const dateClicked = dateFormat(e, "mm/dd/yy")
+    const found = goals.find(goal => goal.date === dateClicked)
+    if (found) {
+      setGoalOnDate(found.text)
+    } else {
+      setGoalOnDate('')
+    }
+  }
+
+
   return(
     <div>
-      <Calendar />
+      <Calendar
+        onClickDay={e => handleClick(e)}/>
+      <p>{goalOnDate}</p>
     </div>
   )  
 }
