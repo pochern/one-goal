@@ -28,14 +28,6 @@ export const theme = createMuiTheme({
         borderRadius: 10
       },
     },
-    MuiSvgIcon: {
-      colorDisabled: {
-        color: '#CCCCCC'
-      },
-      colorAction: {
-        color: '#000000'
-      },
-    },
   },
 });
 
