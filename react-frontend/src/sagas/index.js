@@ -26,7 +26,6 @@ function* deleteGoal(action) {
         body: JSON.stringify({'id': goalId,})
       })
     .then(data => data.json())
-    yield put({type: 'GET_GOALS'})
   } catch (e) {
     console.log(e)
   }
