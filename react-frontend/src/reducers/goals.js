@@ -1,6 +1,8 @@
 import produce from "immer"
 
-const goalReducer = (state = {}, action) => {
+const INITIAL_STATE = { goalList: [] }
+
+const goalReducer = (state = INITIAL_STATE, action) => {
   switch(action.type) {
     case 'GET_GOALS': {
       return {loading: true}
@@ -11,7 +13,8 @@ const goalReducer = (state = {}, action) => {
     }
     case 'DELETE_GOAL': {
       const { goalId } = action.payload
-      return state.goalList.reduce( goal => goal.id === goalId)
+      return produce(state, draft => {
+        draft.goalList = draft.goalList.filter( goal => goal.id !== goalId)})
     }
     case 'CHECK_GOAL': {
       const { isCompleted, goal } = action.payload
