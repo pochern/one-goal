@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import Typography from '@material-ui/core/Typography'
 import dateFormat from 'dateformat'
 import Button from '@material-ui/core/Button'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 import { useSelector, useDispatch } from 'react-redux'
-import { getGoals, checkGoal, deleteGoal, addGoal, editGoal } from '../actions/index'
+import { checkGoal, deleteGoal, addGoal, editGoal } from '../actions/index'
 import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
@@ -38,11 +38,7 @@ export default function HomeView(){
   const goalReducer = useSelector(state => state.goalReducer)
   const goals = goalReducer.goalList ? goalReducer.goalList : {}
 
-  useEffect(() => {
-    dispatch(getGoals())
-  }, [])
-  
- const todayText = (
+  const todayText = (
     <div>
       <Typography variant='h3'>
         Today
