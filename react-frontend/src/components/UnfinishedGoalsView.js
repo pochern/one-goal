@@ -7,7 +7,7 @@ import { checkGoal, deleteGoal } from '../actions/index'
 export default function UnfinishedGoalsView(){
   const columns = [
     { title: 'Goal', field: 'goal' },
-    { title: 'Date', field: 'date' }
+    { title: 'Date created', field: 'date' }
   ]
 
   const dispatch = useDispatch()
