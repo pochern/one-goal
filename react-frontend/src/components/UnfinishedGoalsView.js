@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import MaterialTable from 'material-table'
 import { Paper } from '@material-ui/core'
 import { useSelector, useDispatch } from 'react-redux'
-import { checkGoal, deleteGoal } from './actions/index'
+import { checkGoal, deleteGoal } from '../actions/index'
 
 export default function UnfinishedGoalsView(){
   const columns = [

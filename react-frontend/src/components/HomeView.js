@@ -5,7 +5,7 @@ import dateFormat from 'dateformat'
 import Button from '@material-ui/core/Button'
 import ButtonGroup from '@material-ui/core/ButtonGroup'
 import { useSelector, useDispatch } from 'react-redux'
-import { getGoals, checkGoal, deleteGoal, addGoal, editGoal } from './actions/index'
+import { getGoals, checkGoal, deleteGoal, addGoal, editGoal } from '../actions/index'
 import FormGroup from '@material-ui/core/FormGroup'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox'
@@ -26,7 +26,7 @@ const useStyles = makeStyles({
   }
 })
 
-export default function TodayView(){
+export default function HomeView(){
   const now = new Date()
   const dateToday = dateFormat(now, "mmmm d, yyyy")
   const dbDateFormat = dateFormat(now, "mm/dd/yy")

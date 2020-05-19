@@ -9,7 +9,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import HomeIcon from '@material-ui/icons/Home';
 import DateRange from '@material-ui/icons/DateRange';
 import EventBusy from '@material-ui/icons/EventBusy';
-import TodayView from './TodayView';
+import HomeView from './HomeView';
 import CalendarView from './CalendarView';
 import UnfinishedGoalsView from './UnfinishedGoalsView';
 import {theme} from './MyCustomTheme'
@@ -74,13 +74,13 @@ const appView = (view) => {
   //use switch
   switch(view) {
     case 0:
-      return <TodayView />
+      return <HomeView />
     case 1:
       return <CalendarView />
     case 2:
       return <UnfinishedGoalsView />
     default:
-      return <TodayView />
+      return <HomeView />
   }
 }
 
