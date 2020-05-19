@@ -9,7 +9,7 @@ import createSagaMiddleware from 'redux-saga'
 import allReducers from './reducers'
 import { Provider } from 'react-redux'
 import { logger } from 'redux-logger'
-import reduceSagas from './sagas/sagas'
+import reduceSaga from './sagas/'
 
 const sagaMiddleware = createSagaMiddleware()
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
@@ -19,7 +19,7 @@ const store = createStore(
   composeEnhancer(applyMiddleware(sagaMiddleware, logger)),
 )
 
-sagaMiddleware.run(reduceSagas)
+sagaMiddleware.run(reduceSaga)
 
 ReactDOM.render(
   <Provider store={store}>
