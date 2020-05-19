@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const handleIcons = (index) => {
-  if(index === 0) { return <HomeIcon fontSize='large' color='#CCCCCC'/> }
+  if(index === 0) { return <HomeIcon fontSize='large'/> }
   if(index === 1) { return <DateRange fontSize='large' /> }
   if(index === 2) { return <EventBusy fontSize='large' /> }
 }
