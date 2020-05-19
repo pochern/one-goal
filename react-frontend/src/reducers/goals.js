@@ -22,10 +22,6 @@ const goalReducer = (state = INITIAL_STATE, action) => {
         draft.goalList.find(element => element.id===goal.id).completed = isCompleted
       })
     }
-    case 'ADD_GOAL': {
-      const { goalText } = action.payload
-      return state
-    }
     case 'EDIT_GOAL': {
       const { goalText, goal } = action.payload
       return produce(state, draft => {
