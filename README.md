@@ -37,6 +37,7 @@ python app.py
 
 ### Create the Goal database
 ```
+cd flask-backend
 python
 from app import Goal
 from app import db
