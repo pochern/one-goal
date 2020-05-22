@@ -4,16 +4,41 @@ Useful for standups.
 
 ## To set up locally:
 ### Using NGINX for reverse proxy
-To set it up, add to the server block: 
+To set it up, copy the nginx.conf file contents to your local nginx.conf path.
+
+### Install flask in flask-backend folder
 ```
-location / {
-    proxy_pass http://127.0.0.1:3000;
-    root   html;
-    index  index.html index.htm;
-}
+cd flask-backend
+pip install flask
 ```
+
+### Install npm in react-frontend folder
 ```
-location /data {
-    proxy_pass http://127.0.0.1:3100/data.json;
-}
+cd react-frontend
+npm install
+```
+
+### Run the nginx on your local machine
+```
+sudo nginx
+```
+
+### Run the client on your machine
+```
+cd react-frontend
+npm start
+```
+
+### Run the server on your machine
+```
+cd flask-backend
+python app.py
+```
+
+### Create the Goal database
+```
+python
+from app import Goal
+from app import db
+db.create_all()
 ```
