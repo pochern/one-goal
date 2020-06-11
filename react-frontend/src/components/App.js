@@ -5,7 +5,6 @@ import AppContent from './AppContent'
 import LogoAppBar from './LogoAppBar'
 
 function App() {
-
   const dispatch = useDispatch()
 
   useEffect(() => {
