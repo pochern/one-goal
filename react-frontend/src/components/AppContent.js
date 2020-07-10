@@ -65,9 +65,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const handleIcons = (index) => {
-  if(index === 0) { return <HomeIcon fontSize='large'/> }
-  if(index === 1) { return <DateRange fontSize='large' /> }
-  if(index === 2) { return <EventBusy fontSize='large' /> }
+  const NavigationIcon = [HomeIcon, DateRange, EventBusy][index]
+  return <NavigationIcon fontSize='large' />
 }
 
 const appView = (view) => {
@@ -85,7 +84,7 @@ const appView = (view) => {
 }
 
 export default function AppContent() {
-  const classes = useStyles();
+  const classes = useStyles()
 
   const [view, setView] = useState(0)
 
@@ -94,7 +93,7 @@ export default function AppContent() {
     <div className={classes.root}>
      <Drawer
         className={classes.drawer}
-        variant="permanent"
+        variant='permanent'
         classes={{
           paper: classes.drawerPaper,
         }}
@@ -124,9 +123,9 @@ export default function AppContent() {
       <main className={classes.content}>
         <Toolbar />
         {appView(view)}
-     </main>
+      </main>
     </div>
     </ThemeProvider>
-  );
+  )
 }
 
