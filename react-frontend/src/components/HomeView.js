@@ -36,7 +36,7 @@ export default function HomeView(){
 
   const dispatch = useDispatch()
   const goalReducer = useSelector(state => state.goalReducer)
-  const goals = goalReducer.goalList ? goalReducer.goalList : {}
+  const goals = goalReducer.goalList ? goalReducer.goalList : []
 
   const todayText = (
     <div>
