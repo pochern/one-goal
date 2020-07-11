@@ -11,11 +11,11 @@ function App() {
     dispatch(getGoals())
   }, [dispatch])
 
-  const loginReducer = useSelector(state => state.goalReducer.loading)
+  const login = useSelector(state => state.goalReducer.loading)
 
   return (
     <div>
-    { loginReducer === true ?
+    { login === true ?
       <Login />
       :
       <div>
